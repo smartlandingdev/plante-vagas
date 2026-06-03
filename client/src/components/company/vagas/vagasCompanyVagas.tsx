@@ -1,19 +1,8 @@
 import VagaVagas from "./vagaVagas";
-
-
-type VagaType = {
-  name: string;
-  cidade: string;
-  postada: string;
-  pcd: boolean;
-  regime: string;
-  contratacao: string;
-  salario: string;
-  descricao:string;
-};
+import { Vaga } from "@/services/vaga";
 
 type Props = {
-  vagas: VagaType[];
+  vagas: Vaga[];
 };
 
 export default function VagasCompanyVagas({ vagas }: Props) {

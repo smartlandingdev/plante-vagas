@@ -5,7 +5,8 @@ import { useUser } from "../userContextCompany";
 import { getVagasByEmpresa, Vaga } from "@/services/vaga";
 
 export default function MainCompanyProfile() {
-  const { user } = useUser();
+  const { UserData } = useUser();
+  const user = UserData.user;
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [loading, setLoading] = useState(true);
 

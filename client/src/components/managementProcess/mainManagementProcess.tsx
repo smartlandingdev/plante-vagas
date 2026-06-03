@@ -17,11 +17,6 @@ const MainManagementProcess = () => {
   const [salvando, setSalvando] = useState(false);
   const [erroForm, setErroForm] = useState("");
 
-  const fetchVaga = () => {
-    if (!vagaId) return;
-    getVagaById(Number(vagaId)).then(setVaga).catch((e) => setErro(e.message));
-  };
-
   useEffect(() => {
     if (!vagaId) {
       setErro("Nenhuma vaga selecionada.");
