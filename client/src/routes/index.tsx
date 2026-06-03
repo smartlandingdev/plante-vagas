@@ -8,7 +8,6 @@ import JobPage from "@/pages/JobPage";
 import SearchJobs from "@/pages/Serachjob";
 import Profile from "@/pages/userCandidate";
 import { RegisterProvider } from "@/components/register/RegisterContext";
-import PrivateRoute from "./privateRoute";
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/components/userCandidate/userContext";
 import { RegisterProviderCompany } from "@/components/registerCompany/RegisterContextCompany";
