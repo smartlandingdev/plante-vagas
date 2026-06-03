@@ -7,7 +7,7 @@ import {
 
 import HeaderLogged from "../home-page/headers/headerUserLogged";
 import ProfileCard from "./profile/profilecard";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MyData from "./profile/myData";
 import Address from "./profile/address";
 import InfoLogin from "./profile/infoLogin";
@@ -21,12 +21,13 @@ import Differentiate from "./curriculum/differentiate";
 import SelectionProcess from "./selectionProcess/selectionProcess";
 import { CurriculumProvider } from "./curriculumContext";
 export default function Page() {
-  const [activeTab, setActiveTab] = useState("Perfil");
-  console.log(activeTab);
+  const { secao } = useParams();
+  const navigate = useNavigate();
+  const activeTab = secao ?? "perfil";
 
   const renderContent = () => {
     switch (activeTab) {
-      case "Perfil":
+      case "perfil":
         return <ProfileCard />;
       case "meus-dados":
         return <MyData />;
@@ -58,7 +59,7 @@ export default function Page() {
   return (
     <SidebarProvider>
       <CurriculumProvider>
-        <AppSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <AppSidebar activeTab={activeTab} setActiveTab={(tab) => navigate(`/candidato/${tab}`)} />
           <SidebarInset>
             <header>
               <HeaderLogged />

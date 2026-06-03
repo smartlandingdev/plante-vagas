@@ -36,7 +36,7 @@ export function AppSidebar({
         title: "Perfil",
         url: "/profile",
         icon: User,
-        onClick: () => setActiveTab("Perfil"),
+        onClick: () => setActiveTab("perfil"),
         items: [
           {
             title: "Meus Dados",

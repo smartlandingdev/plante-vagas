@@ -52,7 +52,8 @@ export default function Router() {
                 </UserProvider>
               }
             >
-              <Route path="/candidato/pagina-inicial" element={<Profile />} />
+              <Route path="/candidato" element={<Profile />} />
+              <Route path="/candidato/:secao" element={<Profile />} />
             </Route>
 
             {/* ROTAS EMPRESA - SEM AUTH (temporário para testes) */}
