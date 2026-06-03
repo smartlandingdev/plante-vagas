@@ -70,6 +70,7 @@ export default function Router() {
               <Route path="/empresa/gerenciar-processo" element={<ManagementProcess />} />
               <Route path="/empresa/candidatos" element={<Candidates />} />
               <Route path="/empresa/criar-vaga" element={<CreateVaga />} />
+              <Route path="/empresa/criar-vaga/:secao" element={<CreateVaga />} />
             </Route>
           </Routes>
         </RegisterProviderCompany>

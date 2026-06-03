@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import VagaData from "./vagaData/vagaData";
 import Processselective from "./ProcessoSeletivo/ProcessoSeletivo";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
@@ -9,11 +9,30 @@ import Etapas from "./ProcessoSeletivo/etapas/etapas";
 import { VagaCreateProvider, useVagaCreate } from "./VagaCreateContext";
 import { getVagaById } from "@/services/vaga";
 
+const secaoToTab: Record<string, string> = {
+  "processo-seletivo": "processoSeletivo",
+  "etapas": "etapas",
+};
+
+const tabToSecao: Record<string, string> = {
+  "criarVaga": "",
+  "processoSeletivo": "processo-seletivo",
+  "etapas": "etapas",
+};
 
 const MainCreateVagaInner = () => {
-  const [activeTab, setActiveTab] = useState("criarVaga");
+  const { secao } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const vagaId = searchParams.get("vagaId");
+
+  const activeTab = secaoToTab[secao ?? ""] ?? "criarVaga";
+
+  const navigateToTab = (tab: string) => {
+    const destSecao = tabToSecao[tab] ?? "";
+    const query = vagaId ? `?vagaId=${vagaId}` : "";
+    navigate(`/empresa/criar-vaga${destSecao ? `/${destSecao}` : ""}${query}`);
+  };
   const { setData } = useVagaCreate();
   const [loading, setLoading] = useState(!!vagaId);
 
@@ -34,9 +53,9 @@ const MainCreateVagaInner = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "criarVaga":
-        return <VagaData onProximo={() => setActiveTab("processoSeletivo")} vagaId={vagaId ? Number(vagaId) : undefined} />;
+        return <VagaData onProximo={() => navigateToTab("processoSeletivo")} vagaId={vagaId ? Number(vagaId) : undefined} />;
       case "processoSeletivo":
-        return <Processselective onProximo={() => setActiveTab("etapas")} />;
+        return <Processselective onProximo={() => navigateToTab("etapas")} />;
       case "etapas":
         return <Etapas vagaId={vagaId ? Number(vagaId) : undefined} />;
       default:
@@ -54,7 +73,7 @@ const MainCreateVagaInner = () => {
 
   return (
     <SidebarProvider>
-      <AppSidebarCreate activeTab={activeTab} setActiveTab={setActiveTab} />
+      <AppSidebarCreate activeTab={activeTab} setActiveTab={navigateToTab} />
       <SidebarInset>
         <header>
           <HeaderCompany />
