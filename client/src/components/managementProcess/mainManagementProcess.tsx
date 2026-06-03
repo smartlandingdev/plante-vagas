@@ -1,33 +1,56 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
 import EtapasDisplay from "./etapasDisplay";
-import { getVagaById, addEtapa, EtapaProcessoSeletivo, Vaga } from "@/services/vaga";
+import { EtapaProcessoSeletivo, Vaga } from "@/services/vaga";
+
+const VAGAS_FAKE: Record<number, Vaga> = {
+  1: {
+    id: 1,
+    nome: "Desenvolvedor Frontend",
+    cargo: "Engenheiro de Software",
+    descricao: "Buscamos um desenvolvedor frontend apaixonado por criar interfaces modernas.",
+    salario: 6500,
+    beneficios: [{ id: 1, nome: "Vale Refeição" }, { id: 2, nome: "Plano de Saúde" }],
+    etapas: [
+      { id: 1, nome: "Triagem de Currículo", descricao: "Análise inicial do perfil do candidato.", status: "aberta" },
+      { id: 2, nome: "Teste Técnico", descricao: "Desafio de código com prazo de 3 dias.", status: "aberta" },
+      { id: 3, nome: "Entrevista RH", descricao: "Conversa com o time de pessoas.", status: "aberta" },
+    ],
+    empresaId: 1,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+  2: {
+    id: 2,
+    nome: "Designer UX/UI",
+    cargo: "Designer",
+    descricao: "Procuramos designer criativo para criar experiências incríveis.",
+    salario: 5800,
+    beneficios: [{ id: 4, nome: "Vale Refeição" }],
+    etapas: [
+      { id: 4, nome: "Análise de Portfólio", descricao: "Revisão do portfólio enviado.", status: "aberta" },
+      { id: 5, nome: "Entrevista Técnica", descricao: "Apresentação de case design.", status: "aberta" },
+    ],
+    empresaId: 1,
+    createdAt: "2026-01-15T00:00:00.000Z",
+    updatedAt: "2026-01-15T00:00:00.000Z",
+  },
+};
 
 const MainManagementProcess = () => {
   const [searchParams] = useSearchParams();
   const vagaId = searchParams.get("vagaId");
 
-  const [vaga, setVaga] = useState<Vaga | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState("");
+  const vagaInicial = vagaId ? (VAGAS_FAKE[Number(vagaId)] ?? VAGAS_FAKE[1]) : VAGAS_FAKE[1];
+  const [vaga, setVaga] = useState<Vaga | null>(vagaInicial);
+  const loading = false;
+  const [erro] = useState("");
 
   const [showForm, setShowForm] = useState(false);
   const [nomeEtapa, setNomeEtapa] = useState("");
   const [descricaoEtapa, setDescricaoEtapa] = useState("");
   const [salvando, setSalvando] = useState(false);
   const [erroForm, setErroForm] = useState("");
-
-  useEffect(() => {
-    if (!vagaId) {
-      setErro("Nenhuma vaga selecionada.");
-      setLoading(false);
-      return;
-    }
-    getVagaById(Number(vagaId))
-      .then(setVaga)
-      .catch((e) => setErro(e.message))
-      .finally(() => setLoading(false));
-  }, [vagaId]);
 
   const etapas: EtapaProcessoSeletivo[] = vaga?.etapas ?? [];
 
@@ -39,10 +62,12 @@ const MainManagementProcess = () => {
     setSalvando(true);
     setErroForm("");
     try {
-      const nova = await addEtapa(Number(vagaId), {
+      const nova: EtapaProcessoSeletivo = {
+        id: Date.now(),
         nome: nomeEtapa.trim(),
         descricao: descricaoEtapa.trim(),
-      });
+        status: "aberta",
+      };
       setVaga((prev) => prev ? { ...prev, etapas: [...prev.etapas, nova] } : prev);
       setNomeEtapa("");
       setDescricaoEtapa("");

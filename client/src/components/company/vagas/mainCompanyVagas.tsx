@@ -1,18 +1,45 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getVagasByEmpresa, Vaga } from "@/services/vaga";
+import { Vaga } from "@/services/vaga";
 import VagaVagas from "./vagaVagas";
 
-export default function MainCompanyVagas() {
-  const [vagas, setVagas] = useState<Vaga[]>([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+const VAGAS_FAKE: Vaga[] = [
+  {
+    id: 1,
+    nome: "Desenvolvedor Frontend",
+    cargo: "Engenheiro de Software",
+    descricao: "Buscamos um desenvolvedor frontend apaixonado por criar interfaces modernas e responsivas. Experiência com React e TypeScript desejável.",
+    salario: 6500,
+    beneficios: [{ id: 1, nome: "Vale Refeição" }, { id: 2, nome: "Plano de Saúde" }, { id: 3, nome: "Home Office" }],
+    etapas: [
+      { id: 1, nome: "Triagem de Currículo", descricao: "Análise inicial do perfil.", status: "aberta" },
+      { id: 2, nome: "Teste Técnico", descricao: "Desafio de código com prazo de 3 dias.", status: "aberta" },
+      { id: 3, nome: "Entrevista RH", descricao: "Conversa com o time de pessoas.", status: "aberta" },
+    ],
+    empresaId: 1,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  },
+  {
+    id: 2,
+    nome: "Designer UX/UI",
+    cargo: "Designer",
+    descricao: "Procuramos designer criativo para criar experiências incríveis para nossos usuários. Conhecimento em Figma é obrigatório.",
+    salario: 5800,
+    beneficios: [{ id: 4, nome: "Vale Refeição" }, { id: 5, nome: "Gympass" }],
+    etapas: [
+      { id: 4, nome: "Análise de Portfólio", descricao: "Revisão do portfólio enviado.", status: "aberta" },
+      { id: 5, nome: "Entrevista Técnica", descricao: "Apresentação de case design.", status: "aberta" },
+    ],
+    empresaId: 1,
+    createdAt: "2026-01-15T00:00:00.000Z",
+    updatedAt: "2026-01-15T00:00:00.000Z",
+  },
+];
 
-  useEffect(() => {
-    getVagasByEmpresa()
-      .then(setVagas)
-      .finally(() => setLoading(false));
-  }, []);
+export default function MainCompanyVagas() {
+  const navigate = useNavigate();
+  const vagas = VAGAS_FAKE;
+  const loading = false;
 
   return (
     <>
