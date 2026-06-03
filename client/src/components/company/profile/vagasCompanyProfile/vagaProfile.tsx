@@ -44,7 +44,7 @@ const VagaProfile = ({ vaga }: { vaga: Vaga }) => {
 
       <div className="flex flex-col items-center justify-center gap-2 w-full md:w-auto">
         <button
-          onClick={() => navigate(`/criar-vaga?vagaId=${vaga.id}`)}
+          onClick={() => navigate(`/empresa/criar-vaga?vagaId=${vaga.id}`)}
           className="bg-deepGreen text-white px-6 py-3 rounded-lg hover:bg-green-900 font-semibold font-PrimaryFont w-full md:w-auto"
         >
           EDITAR VAGA

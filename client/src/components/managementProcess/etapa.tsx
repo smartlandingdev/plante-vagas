@@ -110,7 +110,7 @@ const Etapa = ({ etapa, index, onExcluir, onAtualizar }: EtapaProps) => {
 
       <div className="flex flex-col sm:flex-row gap-4 justify-end w-full">
         <button
-          onClick={() => navigate("/candidatos")}
+          onClick={() => navigate("/empresa/candidatos")}
           className="bg-deepGreen text-sm text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-900 font-PrimaryFont w-full sm:w-auto"
         >
           ANALISAR RESPOSTAS

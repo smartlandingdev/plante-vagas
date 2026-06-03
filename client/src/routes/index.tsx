@@ -65,13 +65,11 @@ export default function Router() {
               }
             >
               <Route path="/empresa" element={<CompanyProfile />} />
-              <Route path="/vagas-empresa" element={<CompanyVagas />} />
-              <Route
-                path="/gerenciar-processo"
-                element={<ManagementProcess />}
-              />
-              <Route path="/candidatos" element={<Candidates />} />
-              <Route path="/criar-vaga" element={<CreateVaga />} />
+              <Route path="/empresa/perfil" element={<CompanyProfile />} />
+              <Route path="/empresa/vagas" element={<CompanyVagas />} />
+              <Route path="/empresa/gerenciar-processo" element={<ManagementProcess />} />
+              <Route path="/empresa/candidatos" element={<Candidates />} />
+              <Route path="/empresa/criar-vaga" element={<CreateVaga />} />
             </Route>
           </Routes>
         </RegisterProviderCompany>

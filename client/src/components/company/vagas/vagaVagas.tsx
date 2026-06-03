@@ -44,13 +44,13 @@ const VagaVagas = ({ vaga }: { vaga: Vaga }) => {
 
       <div className="flex flex-col items-center justify-center gap-4 w-full md:w-auto mt-4 md:mt-6">
         <button
-          onClick={() => navigate(`/gerenciar-processo?vagaId=${vaga.id}`)}
+          onClick={() => navigate(`/empresa/gerenciar-processo?vagaId=${vaga.id}`)}
           className="bg-deepGreen text-white px-6 py-3 rounded-lg w-full md:w-auto hover:bg-green-900 font-PrimaryFont font-semibold"
         >
           Gerenciar processo seletivo
         </button>
         <button
-          onClick={() => navigate(`/criar-vaga?vagaId=${vaga.id}`)}
+          onClick={() => navigate(`/empresa/criar-vaga?vagaId=${vaga.id}`)}
           className="font-semibold font-PrimaryFont underline cursor-pointer"
         >
           Editar vaga

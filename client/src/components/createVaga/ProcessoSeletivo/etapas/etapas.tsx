@@ -52,7 +52,7 @@ const Etapas = ({ vagaId }: { vagaId?: number }) => {
       } else {
         await createVaga(payload);
       }
-      navigate("/vagas-empresa");
+      navigate("/empresa/vagas");
     } catch (e: any) {
       setErro(e.message || "Erro ao salvar vaga");
     } finally {

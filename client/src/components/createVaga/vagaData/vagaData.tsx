@@ -41,7 +41,7 @@ const VagaData = ({ onProximo, vagaId }: { onProximo: () => void; vagaId?: numbe
           : undefined,
         beneficios: data.beneficio ? [{ nome: data.beneficio }] : [],
       });
-      navigate("/vagas-empresa");
+      navigate("/empresa/vagas");
     } catch (e: any) {
       setErro(e.message || "Erro ao salvar vaga");
     } finally {

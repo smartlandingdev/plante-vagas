@@ -154,7 +154,7 @@ export function AppSidebarCreate({
     navMain: [
       {
         title: "Dado da vaga",
-        url: "/criar-vaga",
+        url: "/empresa/criar-vaga",
         icon: Briefcase,
         onClick: () => setActiveTab("criarVaga"),
       },

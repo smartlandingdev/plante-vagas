@@ -30,13 +30,13 @@ export default function Header() {
 
         <nav className="hidden sm:flex flex-1 gap-10 text-deepGreen font-medium font-SecondFont justify-center items-center">
           <a
-            onClick={() => navigate("/empresa")}
+            onClick={() => navigate("/empresa/perfil")}
             className="hover:text-green-700 cursor-pointer"
           >
             PERFIL
           </a>
           <a
-            onClick={() => navigate("/vagas-empresa")}
+            onClick={() => navigate("/empresa/vagas")}
             className="hover:text-green-700 cursor-pointer"
           >
             VAGAS
@@ -48,7 +48,7 @@ export default function Header() {
         <nav className="sm:hidden mt-2 flex flex-col items-center gap-4 text-deepGreen font-medium font-SecondFont bg-white py-4 rounded shadow">
           <a
             onClick={() => {
-              navigate("/empresa");
+              navigate("/empresa/perfil");
               setMenuOpen(false);
             }}
             className="hover:text-green-700 cursor-pointer"
@@ -57,7 +57,7 @@ export default function Header() {
           </a>
           <a
             onClick={() => {
-              navigate("/vagas-empresa");
+              navigate("/empresa/vagas");
               setMenuOpen(false);
             }}
             className="hover:text-green-700 cursor-pointer"

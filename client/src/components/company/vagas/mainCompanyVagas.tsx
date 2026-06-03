@@ -25,7 +25,7 @@ export default function MainCompanyVagas() {
       <div className="flex flex-col bg-paleGreen font-SecondFont py-10 px-6 sm:px-10 md:px-20 lg:px-43 justify-center">
         <div className="flex justify-center mb-10">
           <button
-            onClick={() => navigate("/criar-vaga")}
+            onClick={() => navigate("/empresa/criar-vaga")}
             className="bg-oliveGreen h-30 w-30 cursor-pointer rounded-lg text-6xl text-deepGreen shadow-md"
           >
             +

@@ -49,9 +49,9 @@ const LoginForm = () => {
       });
 
       if (data.userType === "company") {
-        navigate("/empresa");
+        navigate("/empresa/perfil");
       } else if (data.userType === "candidate") {
-        navigate("/candidato/pagina-inicial");
+        navigate("/candidato/perfil");
       } else {
         navigate("/");
       }
