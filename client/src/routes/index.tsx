@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import HomePage from "@/pages/home-page";
 import Login from "@/pages/login";
 import RegisterUserOne from "@/pages/register/register-1";
@@ -45,22 +45,22 @@ export default function Router() {
               element={<PageRegisterCompanyTwo />}
             />
 
-            {/* ROTAS PROTEGIDAS - CANDIDATO */}
+            {/* ROTAS CANDIDATO - SEM AUTH (temporário para testes) */}
             <Route
               element={
                 <UserProvider>
-                  <PrivateRoute allowedRoles={["candidate"]} />
+                  <Outlet />
                 </UserProvider>
               }
             >
               <Route path="/candidato/pagina-inicial" element={<Profile />} />
             </Route>
 
-            {/* ROTAS PROTEGIDAS - EMPRESA */}
+            {/* ROTAS EMPRESA - SEM AUTH (temporário para testes) */}
             <Route
               element={
                 <UserProviderCompany>
-                  <PrivateRoute allowedRoles={["company"]} />
+                  <Outlet />
                 </UserProviderCompany>
               }
             >
