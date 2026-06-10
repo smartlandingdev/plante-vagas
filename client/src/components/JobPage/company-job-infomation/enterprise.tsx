@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Building2, Shield, Lightbulb, GraduationCap, Megaphone, Users, Heart, Send, ArrowRight, MapPin, Calendar, Globe } from "lucide-react";
 
 const aboutCompany = {
@@ -43,17 +44,33 @@ const companyValues = [
 ];
 
 const CompanyInfoPage = () => {
+  const [favoritada, setFavoritada] = useState(false);
+
   return (
     <div className="space-y-8">
       {/* Company Overview */}
       <section>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 bg-paleGreen rounded-xl flex items-center justify-center">
-            <Building2 size={20} className="text-deepGreen" />
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-paleGreen rounded-xl flex items-center justify-center">
+              <Building2 size={20} className="text-deepGreen" />
+            </div>
+            <h3 className="text-lg font-bold text-deepGreen font-PrimaryFont">
+              {aboutCompany.title}
+            </h3>
           </div>
-          <h3 className="text-lg font-bold text-deepGreen font-PrimaryFont">
-            {aboutCompany.title}
-          </h3>
+          <button
+            onClick={() => setFavoritada((prev) => !prev)}
+            title={favoritada ? "Remover dos favoritos" : "Favoritar empresa"}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl border font-SecondFont text-sm font-medium transition-all duration-200 ${
+              favoritada
+                ? "bg-red-50 border-red-300 text-red-600 hover:bg-red-100"
+                : "bg-white border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-500"
+            }`}
+          >
+            <Heart size={16} className={favoritada ? "fill-red-500 text-red-500" : ""} />
+            {favoritada ? "Favoritada" : "Favoritar empresa"}
+          </button>
         </div>
 
         <div className="bg-gray-50 rounded-xl p-6 mb-6">

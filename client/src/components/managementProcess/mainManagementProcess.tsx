@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router";
+import { XCircle } from "lucide-react";
 import EtapasDisplay from "./etapasDisplay";
 import { EtapaProcessoSeletivo, Vaga } from "@/services/vaga";
 
@@ -51,8 +52,32 @@ const MainManagementProcess = () => {
   const [descricaoEtapa, setDescricaoEtapa] = useState("");
   const [salvando, setSalvando] = useState(false);
   const [erroForm, setErroForm] = useState("");
+  const [processoEncerrado, setProcessoEncerrado] = useState(false);
+  const [confirmEncerrar, setConfirmEncerrar] = useState(false);
 
   const etapas: EtapaProcessoSeletivo[] = vaga?.etapas ?? [];
+
+  const handleMoverCima = (id: number) => {
+    setVaga((prev) => {
+      if (!prev) return prev;
+      const idx = prev.etapas.findIndex((e) => e.id === id);
+      if (idx <= 0) return prev;
+      const novas = [...prev.etapas];
+      [novas[idx - 1], novas[idx]] = [novas[idx], novas[idx - 1]];
+      return { ...prev, etapas: novas };
+    });
+  };
+
+  const handleMoverBaixo = (id: number) => {
+    setVaga((prev) => {
+      if (!prev) return prev;
+      const idx = prev.etapas.findIndex((e) => e.id === id);
+      if (idx === -1 || idx >= prev.etapas.length - 1) return prev;
+      const novas = [...prev.etapas];
+      [novas[idx], novas[idx + 1]] = [novas[idx + 1], novas[idx]];
+      return { ...prev, etapas: novas };
+    });
+  };
 
   const handleAdicionarEtapa = async () => {
     if (!nomeEtapa.trim()) {
@@ -95,11 +120,59 @@ const MainManagementProcess = () => {
     );
   }
 
+  if (processoEncerrado) {
+    return (
+      <div className="flex flex-col items-center justify-center bg-paleGreen mt-20 font-SecondFont py-20 gap-6 px-6 text-center">
+        <XCircle size={48} className="text-gray-400" />
+        <h1 className="text-2xl text-gray-600">Processo seletivo encerrado</h1>
+        <p className="text-gray-500 text-sm max-w-md">
+          O processo seletivo para <strong>{vaga?.nome}</strong> foi encerrado. Nenhuma nova etapa pode ser adicionada.
+        </p>
+        <button
+          onClick={() => { setProcessoEncerrado(false); setConfirmEncerrar(false); }}
+          className="border border-deepGreen text-deepGreen px-6 py-2 rounded-lg hover:bg-paleGreen font-PrimaryFont"
+        >
+          Reabrir processo
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center bg-paleGreen mt-20 font-SecondFont py-10 sm:py-15 gap-6 sm:gap-8 px-6 sm:px-0">
-      <h1 className="text-2xl text-center max-w-[600px]">
-        Etapas do processo seletivo — {vaga?.nome} ({vaga?.cargo})
-      </h1>
+      <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-2xl justify-between">
+        <h1 className="text-2xl text-center sm:text-left max-w-[600px]">
+          Etapas do processo seletivo — {vaga?.nome} ({vaga?.cargo})
+        </h1>
+
+        {!confirmEncerrar ? (
+          <button
+            onClick={() => setConfirmEncerrar(true)}
+            className="flex items-center gap-2 border border-red-400 text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 font-SecondFont text-sm whitespace-nowrap"
+          >
+            <XCircle size={16} />
+            Encerrar processo
+          </button>
+        ) : (
+          <div className="flex flex-col items-center gap-2 bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-sm text-red-700">Confirmar encerramento?</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirmEncerrar(false)}
+                className="px-3 py-1 text-xs border border-gray-300 rounded hover:bg-gray-100"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => setProcessoEncerrado(true)}
+                className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Encerrar
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <button
         onClick={() => setShowForm((prev) => !prev)}
@@ -166,6 +239,8 @@ const MainManagementProcess = () => {
               prev ? { ...prev, etapas: prev.etapas.map((e) => e.id === atualizada.id ? atualizada : e) } : prev
             )
           }
+          onMoverCima={handleMoverCima}
+          onMoverBaixo={handleMoverBaixo}
         />
       )}
     </div>

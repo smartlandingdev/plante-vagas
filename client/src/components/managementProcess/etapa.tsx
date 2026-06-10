@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import { EtapaProcessoSeletivo, deleteEtapa, updateEtapaService } from "@/services/vaga";
 
 type EtapaProps = {
   etapa: EtapaProcessoSeletivo;
   index: number;
+  isFirst: boolean;
+  isLast: boolean;
   onExcluir: (id: number) => void;
   onAtualizar: (etapa: EtapaProcessoSeletivo) => void;
+  onMoverCima: (id: number) => void;
+  onMoverBaixo: (id: number) => void;
 };
 
-const Etapa = ({ etapa, index, onExcluir, onAtualizar }: EtapaProps) => {
+const Etapa = ({ etapa, index, isFirst, isLast, onExcluir, onAtualizar, onMoverCima, onMoverBaixo }: EtapaProps) => {
   const navigate = useNavigate();
   const [editando, setEditando] = useState(false);
   const [nome, setNome] = useState(etapa.nome);
@@ -96,7 +101,27 @@ const Etapa = ({ etapa, index, onExcluir, onAtualizar }: EtapaProps) => {
   return (
     <div className="bg-white py-10 px-4 sm:px-6 md:px-10 lg:px-20 xl:px-40 font-SecondFont w-full max-w-[1200px] mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-        <h1 className="text-xl break-words">{etapa.nome}</h1>
+        <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-1">
+            <button
+              onClick={() => onMoverCima(etapa.id)}
+              disabled={isFirst}
+              title="Mover para cima"
+              className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronUp size={16} />
+            </button>
+            <button
+              onClick={() => onMoverBaixo(etapa.id)}
+              disabled={isLast}
+              title="Mover para baixo"
+              className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronDown size={16} />
+            </button>
+          </div>
+          <h1 className="text-xl break-words">{etapa.nome}</h1>
+        </div>
 
         <div className="flex gap-2 sm:gap-4 -translate-y-8 sm:translate-y-0">
           <span className="bg-MediumGray p-2 rounded">{index}</span>

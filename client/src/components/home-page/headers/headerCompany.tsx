@@ -41,6 +41,12 @@ export default function Header() {
           >
             VAGAS
           </a>
+          <a
+            onClick={() => navigate("/empresa/configuracoes")}
+            className="hover:text-green-700 cursor-pointer"
+          >
+            CONFIGURAÇÕES
+          </a>
         </nav>
       </div>
 
@@ -63,6 +69,15 @@ export default function Header() {
             className="hover:text-green-700 cursor-pointer"
           >
             VAGAS
+          </a>
+          <a
+            onClick={() => {
+              navigate("/empresa/configuracoes");
+              setMenuOpen(false);
+            }}
+            className="hover:text-green-700 cursor-pointer"
+          >
+            CONFIGURAÇÕES
           </a>
         </nav>
       )}

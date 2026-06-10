@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Vaga } from "@/services/vaga";
 import VagaVagas from "./vagaVagas";
@@ -38,13 +39,41 @@ const VAGAS_FAKE: Vaga[] = [
 
 export default function MainCompanyVagas() {
   const navigate = useNavigate();
-  const vagas = VAGAS_FAKE;
+  const [vagas, setVagas] = useState<Vaga[]>(VAGAS_FAKE);
+  const [statusMap, setStatusMap] = useState<Record<number, "aberta" | "fechada">>({});
   const loading = false;
+
+  const getStatus = (id: number) => statusMap[id] ?? "aberta";
+
+  const handleFinalizar = (id: number) =>
+    setStatusMap((prev) => ({ ...prev, [id]: "fechada" }));
+
+  const handleReabrir = (id: number) =>
+    setStatusMap((prev) => ({ ...prev, [id]: "aberta" }));
+
+  const handleDuplicar = (id: number) => {
+    const original = vagas.find((v) => v.id === id);
+    if (!original) return;
+    const novaId = Date.now();
+    const duplicada: Vaga = {
+      ...original,
+      id: novaId,
+      nome: `${original.nome} (cópia)`,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      beneficios: original.beneficios.map((b) => ({ ...b })),
+      etapas: original.etapas.map((e) => ({ ...e, id: Date.now() + Math.random() })),
+    };
+    setVagas((prev) => [...prev, duplicada]);
+  };
+
+  const abertas = vagas.filter((v) => getStatus(v.id) === "aberta");
+  const fechadas = vagas.filter((v) => getStatus(v.id) === "fechada");
 
   return (
     <>
       <div className="mt-20 bg-paleGreen font-SecondFont py-10 px-6 sm:px-10 md:px-20 lg:px-43">
-        <span className="text-lg sm:text-xl">Vagas Abertas</span>
+        <span className="text-lg sm:text-xl">Vagas Abertas ({abertas.length})</span>
       </div>
 
       <br />
@@ -66,9 +95,22 @@ export default function MainCompanyVagas() {
         ) : (
           <div className="flex flex-col gap-8">
             {vagas.map((vaga) => (
-              <VagaVagas key={vaga.id} vaga={vaga} />
+              <VagaVagas
+                key={vaga.id}
+                vaga={vaga}
+                status={getStatus(vaga.id)}
+                onFinalizar={handleFinalizar}
+                onReabrir={handleReabrir}
+                onDuplicar={handleDuplicar}
+              />
             ))}
           </div>
+        )}
+
+        {fechadas.length > 0 && (
+          <p className="text-sm text-gray-500 text-center mt-6">
+            {fechadas.length} vaga(s) encerrada(s) exibida(s) acima.
+          </p>
         )}
       </div>
     </>

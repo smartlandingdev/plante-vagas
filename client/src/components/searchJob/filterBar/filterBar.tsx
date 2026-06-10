@@ -1,6 +1,9 @@
-import { MapPin, Briefcase, Monitor, Filter, ChevronDown, Search } from "lucide-react";
+import { useState } from "react";
+import { MapPin, Briefcase, Monitor, Filter, ChevronDown, Search, Bell, BellOff } from "lucide-react";
 
 const FilterBar = () => {
+  const [notificacaoAtiva, setNotificacaoAtiva] = useState(false);
+
   return (
     <div className="bg-gradient-to-b from-paleGreen/50 to-white w-full py-8 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -116,6 +119,38 @@ const FilterBar = () => {
             >
               <Filter size={18} />
               APLICAR FILTROS
+            </button>
+          </div>
+
+          {/* Notificação de novas vagas */}
+          <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-SecondFont font-medium text-gray-700">
+                Notificações de novas vagas
+              </p>
+              <p className="text-xs text-gray-500 font-SecondFont">
+                Receba alertas quando surgirem vagas que combinam com seu perfil.
+              </p>
+            </div>
+            <button
+              onClick={() => setNotificacaoAtiva((prev) => !prev)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border font-SecondFont text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                notificacaoAtiva
+                  ? "bg-deepGreen text-white border-deepGreen hover:bg-green-900"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-deepGreen hover:text-deepGreen"
+              }`}
+            >
+              {notificacaoAtiva ? (
+                <>
+                  <Bell size={16} className="fill-white" />
+                  Notificações ativas
+                </>
+              ) : (
+                <>
+                  <BellOff size={16} />
+                  Ativar notificações
+                </>
+              )}
             </button>
           </div>
         </div>
