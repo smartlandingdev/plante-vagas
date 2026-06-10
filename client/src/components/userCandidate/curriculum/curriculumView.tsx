@@ -93,12 +93,82 @@ export default function CurriculumView() {
   const addr = user.Address;
   const location = [addr?.city, addr?.state].filter(Boolean).join(" — ");
 
+  const pdfUploadSection = (
+    <div className="bg-white border border-gray-200 rounded-xl p-5 mb-8">
+      <div className="flex items-center gap-2 mb-3">
+        <Upload size={18} className="text-deepGreen" />
+        <h2 className="text-base font-medium text-deepGreen">Importar currículo via PDF</h2>
+      </div>
+
+      {!pdfFile ? (
+        <div
+          onClick={() => inputRef.current?.click()}
+          className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl py-8 cursor-pointer hover:border-mediumGreen hover:bg-paleGreen/20 transition-all duration-200"
+        >
+          <FileText size={32} className="text-gray-400 mb-2" />
+          <p className="text-sm text-gray-500">Clique para selecionar um PDF</p>
+          <p className="text-xs text-gray-400 mt-1">Somente arquivos .pdf</p>
+          <input
+            ref={inputRef}
+            type="file"
+            accept="application/pdf"
+            className="hidden"
+            onChange={handlePdfChange}
+          />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+            <div className="flex items-center gap-3">
+              <FileText size={20} className="text-deepGreen" />
+              <div>
+                <p className="text-sm font-medium text-gray-700">{pdfFile.name}</p>
+                <p className="text-xs text-gray-400">{(pdfFile.size / 1024).toFixed(1)} KB</p>
+              </div>
+            </div>
+            <button onClick={handleRemoverPdf} className="text-gray-400 hover:text-red-500">
+              <X size={16} />
+            </button>
+          </div>
+
+          {!extraido ? (
+            <button
+              onClick={handleExtrair}
+              disabled={extraindo}
+              className="bg-deepGreen text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-green-900 disabled:opacity-60 flex items-center gap-2 w-fit"
+            >
+              {extraindo ? (
+                <>
+                  <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+                  Extraindo informações...
+                </>
+              ) : (
+                <>
+                  <Upload size={14} />
+                  Extrair informações do PDF
+                </>
+              )}
+            </button>
+          ) : (
+            <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-2 text-sm">
+              <CheckCircle size={16} />
+              Informações extraídas com sucesso! Revise os campos abaixo.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
   if (!existCurriculum) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 md:p-36 lg:p-40 w-full bg-MediumGray max-w-6xl mx-auto font-SecondFont text-center gap-4">
-        <Star className="w-12 h-12 text-deepGreen opacity-40" />
-        <h1 className="text-xl text-DeepGray">Seu currículo ainda não foi criado.</h1>
-        <p className="text-gray-500 text-sm">Preencha as seções de currículo no menu lateral para começar.</p>
+      <div className="flex flex-col p-8 md:p-36 lg:p-40 w-full bg-MediumGray max-w-6xl mx-auto font-SecondFont">
+        {pdfUploadSection}
+        <div className="flex flex-col items-center justify-center text-center gap-4 py-12">
+          <Star className="w-12 h-12 text-deepGreen opacity-40" />
+          <h1 className="text-xl text-DeepGray">Seu currículo ainda não foi criado.</h1>
+          <p className="text-gray-500 text-sm">Preencha as seções de currículo no menu lateral para começar, ou importe um PDF acima.</p>
+        </div>
       </div>
     );
   }
@@ -106,71 +176,7 @@ export default function CurriculumView() {
   return (
     <div className="flex flex-col p-8 md:p-36 lg:p-40 w-full bg-MediumGray max-w-6xl mx-auto font-SecondFont">
 
-      {/* Upload de PDF */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 mb-8">
-        <div className="flex items-center gap-2 mb-3">
-          <Upload size={18} className="text-deepGreen" />
-          <h2 className="text-base font-medium text-deepGreen">Importar currículo via PDF</h2>
-        </div>
-
-        {!pdfFile ? (
-          <div
-            onClick={() => inputRef.current?.click()}
-            className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl py-8 cursor-pointer hover:border-mediumGreen hover:bg-paleGreen/20 transition-all duration-200"
-          >
-            <FileText size={32} className="text-gray-400 mb-2" />
-            <p className="text-sm text-gray-500">Clique para selecionar um PDF</p>
-            <p className="text-xs text-gray-400 mt-1">Somente arquivos .pdf</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="application/pdf"
-              className="hidden"
-              onChange={handlePdfChange}
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-              <div className="flex items-center gap-3">
-                <FileText size={20} className="text-deepGreen" />
-                <div>
-                  <p className="text-sm font-medium text-gray-700">{pdfFile.name}</p>
-                  <p className="text-xs text-gray-400">{(pdfFile.size / 1024).toFixed(1)} KB</p>
-                </div>
-              </div>
-              <button onClick={handleRemoverPdf} className="text-gray-400 hover:text-red-500">
-                <X size={16} />
-              </button>
-            </div>
-
-            {!extraido ? (
-              <button
-                onClick={handleExtrair}
-                disabled={extraindo}
-                className="bg-deepGreen text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-green-900 disabled:opacity-60 flex items-center gap-2 w-fit"
-              >
-                {extraindo ? (
-                  <>
-                    <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
-                    Extraindo informações...
-                  </>
-                ) : (
-                  <>
-                    <Upload size={14} />
-                    Extrair informações do PDF
-                  </>
-                )}
-              </button>
-            ) : (
-              <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-2 text-sm">
-                <CheckCircle size={16} />
-                Informações extraídas com sucesso! Revise os campos abaixo.
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      {pdfUploadSection}
 
       {/* Cabeçalho */}
       <div className="bg-paleGreen border border-deepGreen rounded-md p-6 mb-8">
